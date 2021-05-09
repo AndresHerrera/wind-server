@@ -8,7 +8,7 @@ const { exec } = require("child_process");
 
 const app = express();
 //const grib2json = process.env.GRIB2JSON || "./converter/bin/grib2json.cmd";
-const grib2json = process.env.GRIB2JSON || "cd converter/bin/ && grib2json.cmd";
+const grib2json = process.env.GRIB2JSON || "./converter/bin/grib2json";
 const port = process.env.PORT || 7000;
 const resolution = process.env.RESOLUTION || "0.5";
 const baseDir = `https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_${resolution === "1" ? "1p00" : "0p50"}.pl`;
@@ -227,8 +227,8 @@ function convertGribToJson(filename, targetMoment, offset) {
     // Make sure output directory exists
     checkPath("json-data", true);
 
-    //exec(`${grib2json} --data --output json-data/${filename}.json --names --compact grib-data/${filename}`, { maxBuffer: 500 * 1024 },
-    exec(`${grib2json} --data --output ../../json-data/${filename}.json --names --compact ../../grib-data/${filename}`, { maxBuffer: 500 * 1024 },
+    exec(`${grib2json} --data --output json-data/${filename}.json --names --compact grib-data/${filename}`, { maxBuffer: 500 * 1024 },
+    //exec(`${grib2json} --data --output ../../json-data/${filename}.json --names --compact ../../grib-data/${filename}`, { maxBuffer: 500 * 1024 },
         (error) => {
             if (error) {
                 console.log(`Exec error: ${error}`);
